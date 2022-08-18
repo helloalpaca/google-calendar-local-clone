@@ -3,7 +3,7 @@ import { RootState } from "..";
 
 const today = new Date();
 
-type tDate = {
+type TDate = {
   year: number;
   month: number;
   date: number;
@@ -11,7 +11,8 @@ type tDate = {
   hour: number;
   minute: number;
 };
-type tCalendar = { today: tDate; current: tDate };
+
+type TCalendar = { today: TDate; current: TDate };
 
 const formatDate = (date: Date) => {
   return {
@@ -24,7 +25,7 @@ const formatDate = (date: Date) => {
   };
 };
 
-const initialState: tCalendar = {
+const initialState: TCalendar = {
   today: formatDate(today),
   current: formatDate(today),
 };
@@ -142,7 +143,7 @@ export const getMonthlyCalendar = (state: RootState) => {
   var nextDate = endDay.getDate();
   var nextDay = endDay.getDay();
 
-  let days = new Array();
+  let days = new Array<number>();
 
   for (let i = prevDay; i > 0; i--) {
     days.push(prevDate - i + 1);
@@ -160,6 +161,6 @@ export const getMonthlyCalendar = (state: RootState) => {
 };
 
 //TODO: getWeeklyCalendar, getMiniCalendar
-export const getWeeklyCalendar = (state: tDate) => {};
+export const getWeeklyCalendar = (state: TDate) => {};
 
 export default calendarSlice.reducer;

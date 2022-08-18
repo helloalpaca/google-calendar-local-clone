@@ -10,16 +10,20 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.8.4",
+    "lodash": "4.17.21",
     "next": "12.2.5",
     "next-redux-wrapper": "7.0.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-redux": "8.0.2"
+    "react-redux": "8.0.2",
+    "redux-logger": "3.0.6"
   },
   "devDependencies": {
+    "@types/lodash": "4.14.183",
     "@types/node": "18.7.6",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
+    "@types/redux-logger": "3.0.9",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
     "typescript": "4.7.4"

@@ -42,3 +42,4 @@ next-env.d.ts
 # custom
 package-lock.json
 yarn.lock
+*_old.*

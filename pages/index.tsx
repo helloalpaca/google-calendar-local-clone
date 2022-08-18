@@ -1,39 +1,48 @@
-import type { NextPage } from "next";
+import type { NextComponentType, NextPage } from "next";
+import next from "next";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import Calendar from "../components/Calendar";
+import ScheduleList from "../components/ScheduleList";
 import {
   getCurrent,
-  getMonthlyCalendar,
-  getToday,
   setCurrentNextMonth,
   setCurrentPrevMonth,
+  getMonthlyCalendar,
 } from "../store/slice/calendar";
+import { addSchedule, getIdx } from "../store/slice/schedule";
+import { getSchedules } from "../store/slice/schedule";
+import _ from "lodash";
 
-const Home: NextPage = () => {
-  const days = useAppSelector(getMonthlyCalendar);
+const MemoCalendar = React.memo(Calendar, _.isEqual);
+const MemoScheduleList = React.memo(ScheduleList, _.isEqual);
+
+const Home = () => {
   const current = useAppSelector(getCurrent);
-  const today = useAppSelector(getToday);
+  const schedules = useAppSelector(getSchedules);
   const dispatch = useAppDispatch();
+  const days = useAppSelector(getMonthlyCalendar);
+  const idx = useAppSelector(getIdx);
+
+  let date = new Date();
+
+  const [schedule, setSchedule] = useState({
+    id: 0,
+    title: "",
+    context: "",
+    label: "",
+    startDate: new Date(new Date().setMinutes(0, 0, 0)),
+    endDate: new Date(date.setHours(date.getHours() + 1, 0, 0, 0)),
+    repeat: "",
+  });
 
   return (
     <>
-      <div>
-        {current.year}년 {current.month}월
-      </div>
-      <table>
-        <tbody>
-          {days.map((day, index) => {
-            return (
-              index % 7 === 0 && (
-                <tr key={index}>
-                  {days.slice(index, index + 7).map((d, i) => {
-                    return <td key={i}>{d}</td>;
-                  })}
-                </tr>
-              )
-            );
-          })}
-        </tbody>
-      </table>
+      <h1>
+        {current.year}년 {current.month + 1}월
+      </h1>
+
+      <MemoCalendar days={days} />
 
       <button
         onClick={() => {
@@ -49,6 +58,39 @@ const Home: NextPage = () => {
       >
         다음달
       </button>
+
+      <div style={{ marginTop: "20px" }} />
+      <h1>Schedules</h1>
+
+      <label>제목</label>
+      <input
+        onChange={(e) => {
+          setSchedule({
+            ...schedule,
+            title: e.target.value,
+          });
+        }}
+      ></input>
+      <br />
+      <label>내용</label>
+      <input
+        onChange={(e) => {
+          setSchedule({
+            ...schedule,
+            context: e.target.value,
+          });
+        }}
+      ></input>
+      <button
+        onClick={() => {
+          dispatch(addSchedule(schedule));
+        }}
+      >
+        추가
+      </button>
+
+      <div style={{ marginTop: "10px" }} />
+      <MemoScheduleList />
     </>
   );
 };
