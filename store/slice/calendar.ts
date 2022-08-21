@@ -120,13 +120,20 @@ export const calendarSlice = createSlice({
       nCurrent.setDate(nCurrent.getDate() - 1);
       state.current = formatDate(nCurrent);
     },
+    setCurrentToday: (state) => {
+      state.current = state.today;
+    },
 
     //TODO: Time 관련 동작 확인하기
   },
 });
 
-export const { setToday, setCurrentNextMonth, setCurrentPrevMonth } =
-  calendarSlice.actions;
+export const {
+  setToday,
+  setCurrentNextMonth,
+  setCurrentPrevMonth,
+  setCurrentToday,
+} = calendarSlice.actions;
 
 export const getToday = (state: RootState) => state.calendar.today;
 export const getCurrent = (state: RootState) => state.calendar.current;
@@ -153,7 +160,7 @@ export const getMonthlyCalendar = (state: RootState) => {
     days.push(i);
   }
 
-  for (let i = 1; i < 8 - nextDay; i++) {
+  for (let i = 1; i < 8 - nextDay && nextDay !== 0; i++) {
     days.push(i);
   }
 

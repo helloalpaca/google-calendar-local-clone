@@ -9,6 +9,7 @@ import {
   setCurrentNextMonth,
   setCurrentPrevMonth,
   getMonthlyCalendar,
+  setCurrentToday,
 } from "../store/slice/calendar";
 import { addSchedule, getIdx } from "../store/slice/schedule";
 import { getSchedules } from "../store/slice/schedule";
@@ -42,12 +43,22 @@ const Home = () => {
         {current.year}년 {current.month + 1}월
       </h1>
 
+      <button
+        onClick={() => {
+          dispatch(setCurrentToday());
+        }}
+        className="bg-blue-500 border-black border-2 p-3"
+      >
+        오늘
+      </button>
+
       <MemoCalendar days={days} />
 
       <button
         onClick={() => {
           dispatch(setCurrentPrevMonth());
         }}
+        className="bg-blue-500 border-black border-2 p-3"
       >
         이전달
       </button>
@@ -55,6 +66,7 @@ const Home = () => {
         onClick={() => {
           dispatch(setCurrentNextMonth());
         }}
+        className="bg-blue-500 border-black border-2 p-3"
       >
         다음달
       </button>
@@ -88,9 +100,6 @@ const Home = () => {
       >
         추가
       </button>
-
-      <div style={{ marginTop: "10px" }} />
-      <MemoScheduleList />
     </>
   );
 };
