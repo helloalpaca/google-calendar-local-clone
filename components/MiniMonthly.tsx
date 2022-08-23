@@ -66,7 +66,11 @@ const MiniMonthly: NextPage<IProps> = ({
       <div className="text-center">
         <div className="grid grid-cols-7 border-b border-gray-300">
           {DayOfWeek.map((d, i) => {
-            return <div className="border-r border-gray-300">{d}</div>;
+            return (
+              <div key={i} className="border-r border-gray-300">
+                {d}
+              </div>
+            );
           })}
         </div>
 

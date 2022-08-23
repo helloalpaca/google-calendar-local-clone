@@ -6,16 +6,16 @@ type TDate = {
 
 export const getMiniMonthly = (current: Date) => {
   // 이전 달의 마지막 날 날짜와 요일 구하기)
-  var startDay = current;
+  let startDay = current;
   startDay.setMonth(current.getMonth(), 0);
-  var prevDate = startDay.getDate();
-  var prevDay = startDay.getDay();
+  let prevDate = startDay.getDate();
+  let prevDay = startDay.getDay();
 
   // 이번 달의 마지막날 날짜와 요일 구하기
-  var endDay = current;
+  let endDay = current;
   endDay.setMonth(current.getMonth() + 2, 0);
-  var nextDate = endDay.getDate();
-  var nextDay = endDay.getDay();
+  let nextDate = endDay.getDate();
+  let nextDay = endDay.getDay();
 
   let days = new Array<TDate>();
 
