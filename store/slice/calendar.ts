@@ -1,21 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { TIMEOUT } from "dns";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
 const today = new Date();
 
 type TCalendar = { today: Date; current: Date };
-
-const formatDate = (date: Date) => {
-  return {
-    year: date.getFullYear(), //2022
-    month: date.getMonth(), //7 (index 0부터 시작)
-    date: date.getDate(), //17
-    day: date.getDay(), //Sunday - Saturday : 0 - 6
-    hour: date.getHours(), // 0 ~ 23
-    minute: date.getMinutes(),
-  };
-};
 
 const initialState: TCalendar = {
   today: today,
@@ -35,6 +23,10 @@ export const calendarSlice = createSlice({
       const today: Date = new Date();
       state.today = today;
       state.current = today;
+    },
+
+    setCurrent: (state, action: PayloadAction<Date>) => {
+      state.current = action.payload;
     },
 
     setCurrentNextMonth: (state) => {
@@ -101,6 +93,7 @@ export const calendarSlice = createSlice({
 export const {
   setToday,
   setCurrentToday,
+  setCurrent,
   setCurrentNextMonth,
   setCurrentPrevMonth,
 } = calendarSlice.actions;
@@ -110,27 +103,20 @@ export const getCurrent = (state: RootState) => state.calendar.current;
 
 export const getMonthlyCalendar = (state: RootState) => {
   const current = state.calendar.current;
-  console.log("today: " + state.calendar.today);
-  console.log("current: " + state.calendar.current);
 
   // 이전 달의 마지막 날 날짜와 요일 구하기)
   var startDay = current;
   startDay.setMonth(current.getMonth(), 0);
-  console.log("이전 달의 마지막 요일: " + startDay);
   var prevDate = startDay.getDate();
   var prevDay = startDay.getDay();
 
   // 이번 달의 마지막날 날짜와 요일 구하기
   var endDay = current;
   endDay.setMonth(state.calendar.current.getMonth() + 2, 0);
-  console.log("이번달의 마지막 요일: " + endDay);
   var nextDate = endDay.getDate();
   var nextDay = endDay.getDay();
 
   let days = new Array<number>();
-
-  console.log("prevDate: " + prevDate);
-  console.log("prevDay: " + prevDay);
 
   for (let i = prevDay; i > 0; i--) {
     days.push(prevDate - i + 1);
@@ -151,17 +137,12 @@ export const getMonthlyCalendar = (state: RootState) => {
 export const getWeeklyCalendar = (state: RootState) => {
   let days = new Array<number>();
   const currentDay = state.calendar.current.getDay();
-  const currentDate = state.calendar.current.getDate();
-
-  console.log("current: " + state.calendar.current);
-  console.log("currentDay: " + currentDay);
 
   for (let i = currentDay - 1; i > 0; i--) {
     let temp = new Date(state.calendar.current);
     temp.setDate(temp.getDate() - i);
 
     days.push(temp.getDate());
-    console.log("temp: " + temp.getDate());
   }
 
   days.push(state.calendar.current.getDate());
@@ -171,7 +152,6 @@ export const getWeeklyCalendar = (state: RootState) => {
     temp.setDate(temp.getDate() + i);
 
     days.push(temp.getDate());
-    console.log("temp: " + temp);
   }
 
   return days;

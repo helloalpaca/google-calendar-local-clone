@@ -1,14 +1,8 @@
-import type { NextComponentType, NextPage, NextPageContext } from "next";
-import React, { ComponentProps, ComponentType, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import type { NextPage } from "next";
+import React from "react";
 
 import { useAppSelector } from "../app/hooks";
-import {
-  getCurrent,
-  getMonthlyCalendar,
-  getWeeklyCalendar,
-} from "../store/slice/calendar";
-import { getSchedules } from "../store/slice/schedule";
+import { getWeeklyCalendar } from "../store/slice/calendar";
 
 const Weekly: NextPage = () => {
   const days = useAppSelector(getWeeklyCalendar);

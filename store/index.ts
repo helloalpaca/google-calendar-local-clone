@@ -1,8 +1,7 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import calendarReducer from "./slice/calendar";
 import scheduleReducer from "./slice/schedule";
-import logger from "redux-logger";
 
 export const store = configureStore({
   reducer: {

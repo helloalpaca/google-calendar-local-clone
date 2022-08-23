@@ -1,16 +1,12 @@
 import type { NextPage } from "next";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAngleDown,
   faAngleLeft,
   faAngleRight,
-  faArrowLeft,
   faBars,
   faCaretDown,
   faCookieBite,
-  faHamburger,
-  faSortDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
@@ -46,7 +42,7 @@ const Header: NextPage<IProps> = ({
 
   return (
     <>
-      <div className="flex w-screen fixed h-16 top-0 items-center border-gray-300 border-y justify-between">
+      <div className="flex w-screen h-16 top-0 items-center border-gray-300 border-y justify-between">
         <FontAwesomeIcon
           icon={faBars}
           size="2x"
@@ -100,8 +96,15 @@ const Header: NextPage<IProps> = ({
 
         <Menu>
           <MenuHandler>
-            <Button variant="gradient" className="text-gray-300">
-              Open Menu
+            <Button className="text-black border border-gray-300 p-2 m-4">
+              {option}
+              <FontAwesomeIcon
+                icon={faCaretDown}
+                size="1x"
+                color="#5f6367"
+                className="ml-4"
+                onClick={() => {}}
+              />
             </Button>
           </MenuHandler>
           <MenuList>
@@ -134,60 +137,6 @@ const Header: NextPage<IProps> = ({
             </MenuItem>
           </MenuList>
         </Menu>
-        {/* 
-        <div className="relative text-left float-right">
-          <div
-            className="p-2 items-center justify-center border rounded-lg hover:border-gray-200"
-            onClick={() => setIsOption((prev) => !prev)}
-          >
-            <button>{option}</button>
-            <FontAwesomeIcon
-              icon={faCaretDown}
-              size="1x"
-              color="#5f6367"
-              className="ml-4"
-              onClick={() => {}}
-            />
-          </div>
-         <div
-            className={`absolute right-0 mt-2 w-12 rounded-md shadow-lg bg-white ${
-              isOption ? "visible" : "hidden"
-            }`}
-          >
-            <div className="py-1">
-              <div
-                className="text-gray-700 block p-1 text-sm"
-                onClick={() => {
-                  setOption("월");
-                  setIsOption(false);
-                  console.log("월 clicked!");
-                }}
-              >
-                월
-              </div>
-              <div
-                className="text-gray-700 block p-1 text-sm"
-                onClick={() => {
-                  setOption("주");
-                  setIsOption(false);
-                  console.log("주 clicked!");
-                }}
-              >
-                주
-              </div>
-              <div
-                className="text-gray-700 block p-1 text-sm"
-                onClick={() => {
-                  setOption("일");
-                  setIsOption(false);
-                  console.log("일 clicked!");
-                }}
-              >
-                일
-              </div>
-            </div>
-          </div> 
-        </div>*/}
       </div>
     </>
   );

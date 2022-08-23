@@ -32,6 +32,7 @@ export const scheduleSclice = createSlice({
     },
     addSchedule: (state, action: PayloadAction<TSchedule>) => {
       const schedule = { ...action.payload, id: state.idx };
+      console.log("schedule: " + JSON.stringify(schedule));
       state.schedules.push(schedule);
       state.idx = state.idx + 1;
     },
