@@ -32,56 +32,51 @@ const Monthly: NextPage = () => {
         tempDay.getMonth() === sch[i].startDate.getMonth() &&
         tempDay.getDate() === sch[i].startDate.getDate()
       ) {
-        result.push(sch[i].title);
+        if (result.length < 2) {
+          result.push(sch[i].title);
+        } else if (result.length === 2) {
+          result.push("...");
+        }
       }
     }
+
     return result;
   };
 
   return (
-    <>
-      <table>
-        <thead>
-          <tr>
-            <th>월</th>
-            <th>화</th>
-            <th>수</th>
-            <th>목</th>
-            <th>금</th>
-            <th>토</th>
-            <th>일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {days.map((day, index) => {
-            return (
-              index % 7 === 0 && (
-                <tr key={index} className="max-h-12">
-                  {days.slice(index, index + 7).map((d, i) => {
-                    return (
-                      // <td key={i} className="border flex flex-col p-3">
-                      //   {d}
-                      // </td>
-                      <td key={i} className="border-4 border-blue-300">
-                        <div
-                          className="px-12 h-24"
-                          //className="cursor-pointer ml-[-1px] indent-3 bg-[#7986CB] h-[20px] w-full mr-2 rounded-r-[4px] flex items-center text-xs text-white"
-                        >
-                          {d}
-                          {getSchueleByDate(d).map((s, i) => {
-                            return <div key={i}>{s}</div>;
-                          })}
-                        </div>
-                      </td>
-                    );
-                  })}
-                </tr>
-              )
-            );
-          })}
-        </tbody>
-      </table>
-    </>
+    <div className="text-center">
+      <div className="grid grid-flow-row grid-cols-7 border-b border-gray-300 ">
+        <div className="border-r border-gray-300">월</div>
+        <div className="border-r border-gray-300">화</div>
+        <div className="border-r border-gray-300">수</div>
+        <div className="border-r border-gray-300">목</div>
+        <div className="border-r border-gray-300">금</div>
+        <div className="border-r border-gray-300">토</div>
+        <div>일</div>
+      </div>
+
+      {days.map((day, index) => {
+        return (
+          index % 7 === 0 && (
+            <div key={index} className="grid grid-flow-row grid-cols-7 ">
+              {days.slice(index, index + 7).map((d, i) => {
+                return (
+                  <div
+                    key={i}
+                    className="border-r border-b border-gray-300 h-28"
+                  >
+                    {d}
+                    {getSchueleByDate(d).map((s, i) => {
+                      return <div key={i}>{s}</div>;
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          )
+        );
+      })}
+    </div>
   );
 };
 

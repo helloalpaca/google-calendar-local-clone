@@ -46,7 +46,7 @@ const Header: NextPage<IProps> = ({
 
   return (
     <>
-      <div className="flex max-w-screen-2xl w-full fixed h-16 top-0 items-center border-gray-300 border-y justify-between">
+      <div className="flex w-screen fixed h-16 top-0 items-center border-gray-300 border-y justify-between">
         <FontAwesomeIcon
           icon={faBars}
           size="2x"
