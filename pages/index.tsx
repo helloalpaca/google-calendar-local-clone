@@ -1,105 +1,72 @@
 import type { NextComponentType, NextPage } from "next";
 import next from "next";
 import React, { useEffect, useState } from "react";
+import {
+  Popover,
+  PopoverHandler,
+  Button,
+  PopoverContent,
+} from "@material-tailwind/react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import Calendar from "../components/Calendar";
+import Monthly from "../components/Monthly";
 import ScheduleList from "../components/ScheduleList";
 import {
   getCurrent,
   setCurrentNextMonth,
   setCurrentPrevMonth,
   getMonthlyCalendar,
-  setCurrentToday,
 } from "../store/slice/calendar";
 import { addSchedule, getIdx } from "../store/slice/schedule";
 import { getSchedules } from "../store/slice/schedule";
 import _ from "lodash";
+import Header from "../components/Header";
+import AddSchedule from "../components/AddSchedule";
+import Weekly from "../components/Weekly";
 
-const MemoCalendar = React.memo(Calendar, _.isEqual);
+const MemoCalendar = React.memo(Monthly, _.isEqual);
+const MemoWeekly = React.memo(Weekly, _.isEqual);
 const MemoScheduleList = React.memo(ScheduleList, _.isEqual);
 
 const Home = () => {
   const current = useAppSelector(getCurrent);
   const schedules = useAppSelector(getSchedules);
   const dispatch = useAppDispatch();
-  const days = useAppSelector(getMonthlyCalendar);
   const idx = useAppSelector(getIdx);
 
   let date = new Date();
 
-  const [schedule, setSchedule] = useState({
-    id: 0,
-    title: "",
-    context: "",
-    label: "",
-    startDate: new Date(new Date().setMinutes(0, 0, 0)),
-    endDate: new Date(date.setHours(date.getHours() + 1, 0, 0, 0)),
-    repeat: "",
-  });
+  const [isOpen, setIsOpen] = useState(true);
+  const [option, setOption] = useState("월");
 
   return (
     <>
-      <h1>
-        {current.year}년 {current.month + 1}월
-      </h1>
+      <Header
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        option={option}
+        setOption={setOption}
+      />
 
-      <button
-        onClick={() => {
-          dispatch(setCurrentToday());
-        }}
-        className="bg-blue-500 border-black border-2 p-3"
-      >
-        오늘
-      </button>
+      <div className="grid grid-cols-6 max-h-screen mt-16">
+        <div
+          className={`col-start-1 ease-in-out h-full transition-all border-r border-gray-300 ${
+            isOpen ? "translate-x-0 " : "-translate-x-full"
+          }`}
+        >
+          <div>미니 캘린더</div>
+          <div>시간이 된다면 라벨까지...</div>
 
-      <MemoCalendar days={days} />
+          <AddSchedule />
+        </div>
 
-      <button
-        onClick={() => {
-          dispatch(setCurrentPrevMonth());
-        }}
-        className="bg-blue-500 border-black border-2 p-3"
-      >
-        이전달
-      </button>
-      <button
-        onClick={() => {
-          dispatch(setCurrentNextMonth());
-        }}
-        className="bg-blue-500 border-black border-2 p-3"
-      >
-        다음달
-      </button>
-
-      <div style={{ marginTop: "20px" }} />
-      <h1>Schedules</h1>
-
-      <label>제목</label>
-      <input
-        onChange={(e) => {
-          setSchedule({
-            ...schedule,
-            title: e.target.value,
-          });
-        }}
-      ></input>
-      <br />
-      <label>내용</label>
-      <input
-        onChange={(e) => {
-          setSchedule({
-            ...schedule,
-            context: e.target.value,
-          });
-        }}
-      ></input>
-      <button
-        onClick={() => {
-          dispatch(addSchedule(schedule));
-        }}
-      >
-        추가
-      </button>
+        <div
+          className={`col-span-5 ${
+            isOpen ? "col-start-2 translate-x-0" : "col-start-1"
+          }`}
+        >
+          {option === "월" ? <MemoCalendar /> : <MemoWeekly />}
+        </div>
+      </div>
     </>
   );
 };

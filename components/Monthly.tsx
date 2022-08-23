@@ -6,25 +6,24 @@ import { useAppSelector } from "../app/hooks";
 import { getCurrent, getMonthlyCalendar } from "../store/slice/calendar";
 import { getSchedules } from "../store/slice/schedule";
 
-interface IProps {
-  days: Array<number>;
-}
-const Calendar: NextPage<IProps> = ({ days }: IProps) => {
+const Monthly: NextPage = () => {
   useEffect(() => {
     console.log("Calendar Component Rendered!");
   }, []);
 
-  useEffect(() => {
-    console.log("Calendar Component Rendered by days!");
-  }, [days]);
-
+  const days = useAppSelector(getMonthlyCalendar);
   const schedules = useAppSelector(getSchedules);
   const current = useAppSelector(getCurrent);
 
   const getSchueleByDate = (d: number) => {
     const sch = schedules;
     const result = [];
-    let tempDay = new Date(current.year, current.month, current.date);
+    //let tempDay = new Date(current.year, current.month, current.date);
+    let tempDay = new Date(
+      current.getFullYear(),
+      current.getMonth(),
+      current.getDate()
+    );
     tempDay.setDate(d);
 
     for (let i = 0; i < sch.length; i++) {
@@ -86,4 +85,4 @@ const Calendar: NextPage<IProps> = ({ days }: IProps) => {
   );
 };
 
-export default Calendar;
+export default Monthly;
