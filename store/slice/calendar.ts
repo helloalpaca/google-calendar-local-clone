@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
-const today = new Date();
-
 type TCalendar = { today: Date; current: Date };
+
+const today = new Date();
 
 const initialState: TCalendar = {
   today: today,
@@ -19,14 +19,14 @@ export const calendarSlice = createSlice({
       state.today = today;
     },
 
+    setCurrent: (state, action: PayloadAction<Date>) => {
+      state.current = action.payload;
+    },
+
     setCurrentToday: (state) => {
       const today: Date = new Date();
       state.today = today;
       state.current = today;
-    },
-
-    setCurrent: (state, action: PayloadAction<Date>) => {
-      state.current = action.payload;
     },
 
     setCurrentNextMonth: (state) => {
@@ -101,39 +101,8 @@ export const {
 export const getToday = (state: RootState) => state.calendar.today;
 export const getCurrent = (state: RootState) => state.calendar.current;
 
-export const getMonthlyCalendar = (state: RootState) => {
-  const current = state.calendar.current;
-
-  // 이전 달의 마지막 날 날짜와 요일 구하기)
-  var startDay = current;
-  startDay.setMonth(current.getMonth(), 0);
-  var prevDate = startDay.getDate();
-  var prevDay = startDay.getDay();
-
-  // 이번 달의 마지막날 날짜와 요일 구하기
-  var endDay = current;
-  endDay.setMonth(state.calendar.current.getMonth() + 2, 0);
-  var nextDate = endDay.getDate();
-  var nextDay = endDay.getDay();
-
-  let days = new Array<number>();
-
-  for (let i = prevDay; i > 0; i--) {
-    days.push(prevDate - i + 1);
-  }
-
-  for (let i = 1; i <= nextDate; i++) {
-    days.push(i);
-  }
-
-  for (let i = 1; i < 7 - nextDay + 1; i++) {
-    days.push(i);
-  }
-
-  return days;
-};
-
 //TODO: getWeeklyCalendar, getMiniCalendar
+/*
 export const getWeeklyCalendar = (state: RootState) => {
   let days = new Array<number>();
   const currentDay = state.calendar.current.getDay();
@@ -155,6 +124,6 @@ export const getWeeklyCalendar = (state: RootState) => {
   }
 
   return days;
-};
+};*/
 
 export default calendarSlice.reducer;

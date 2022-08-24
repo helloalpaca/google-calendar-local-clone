@@ -4,32 +4,28 @@ import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getCurrent } from "../store/slice/calendar";
+import { getCurrent, setCurrent } from "../store/slice/calendar";
 import { getMiniMonthly } from "../utils/getMiniMonthly";
 import { DayOfWeek } from "../utils/static";
 
 interface IProps {
   miniCurrent: Date;
   setMiniCurrent: Dispatch<SetStateAction<Date>>;
-  mode: "set" | "local";
+  mode: "set" | "local" /* set: update current, local: setMinicurrent */;
 }
+
 const MiniMonthly: NextPage<IProps> = ({
   miniCurrent,
   setMiniCurrent,
   mode,
 }: IProps) => {
-  const current = useAppSelector(getCurrent);
+  let current = useAppSelector(getCurrent);
   const dispatch = useAppDispatch();
-
   let days = getMiniMonthly(miniCurrent);
 
   useEffect(() => {
-    days = getMiniMonthly(miniCurrent);
-  }, [miniCurrent]);
-
-  useEffect(() => {
     if (mode === "set") {
-      setMiniCurrent(current);
+      setMiniCurrent(new Date(current));
     }
   }, [current]);
 
@@ -85,20 +81,15 @@ const MiniMonthly: NextPage<IProps> = ({
                   return (
                     <div
                       key={i}
-                      className={`border-r border-gray-300 ${d.class} bg-yellow-300`}
+                      className={`border-r border-gray-300 ${d.class}`}
                       onClick={() => {
-                        const tempDate = new Date(
-                          d.date.getFullYear(),
-                          d.date.getMonth(),
-                          d.date.getDate()
-                        );
-
-                        setMiniCurrent(tempDate); // TODO: 이부분 동작 안함
-                        /*if (mode === "set") {
+                        if (mode === "set") {
+                          console.log("mode: " + mode);
                           dispatch(setCurrent(d.date));
                         } else {
+                          console.log("mode: " + mode);
                           setMiniCurrent(d.date);
-                        }*/
+                        }
                       }}
                     >
                       {d.date.getDate()}
