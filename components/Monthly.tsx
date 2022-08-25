@@ -6,7 +6,7 @@ import { useAppSelector } from "../app/hooks";
 import { getCurrent } from "../store/slice/calendar";
 import { getSchedules } from "../store/slice/schedule";
 import { getMonthly } from "../utils/getMonthly";
-import { getScheduleByDate } from "../utils/getScheduleByDate";
+import { getScheduleOfWeek } from "../utils/getScheduleByDate";
 import { DayOfWeek } from "../utils/static";
 
 const Monthly: NextPage = () => {
@@ -49,41 +49,17 @@ const Monthly: NextPage = () => {
                 );
               })}
 
-              {getScheduleByDate(day, current, schedules).map((d, idx) => {
-                {
-                  console.log("d.start: " + d.start + ", d.end: " + d.end);
-                }
+              {getScheduleOfWeek(day, current, schedules).map((d, idx) => {
                 return (
                   <div
                     key={idx}
-                    className={`row-start-${d.row} col-start-${d.start} col-end-${d.end} border-gray-300 bg-yellow-200 rounded-md`}
+                    className={`border-gray-300 bg-yellow-200 rounded-md`}
+                    style={{ gridColumn: d.start + "/" + d.end }}
                   >
                     {d.title}
                   </div>
                 );
               })}
-
-              {/*
-             1. 일정 길이가 긴거 -> 짧은거 순으로 렌더링.
-             2. col-start-1이 세개가 넘어가면 ... 렌더링하기   
-            */}
-
-              <div className="row-start-2 col-start-1 col-end-7 border-gray-300 bg-yellow-200 rounded-md">
-                Calendar를 grid로 구현
-              </div>
-              <div className="row-start-3 col-start-1 col-end-6 border-gray-300 bg-blue-200 rounded-md">
-                여러날에 걸친 일정은 col-start-n, col-end-n으로 표현
-              </div>
-              <div className="row-start-4 col-start-2 col-end-4  border-gray-300 bg-pink-200 rounded-md">
-                월요일부터 시작일-끝일이 긴것부터 렌더링
-              </div>
-              <div className="row-start-4 col-start-1 border-gray-300 bg-gray-200 rounded-md">
-                ...
-              </div>
-
-              <div className="row-start-4 col-start-5 border-gray-300 bg-gray-200 rounded-md">
-                ...
-              </div>
             </div>
           )
         );

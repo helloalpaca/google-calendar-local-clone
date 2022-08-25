@@ -34,16 +34,21 @@ export const getScheduleByDate = (
 
   if (sch[key]) {
     sch[key].forEach((d, idx) => {
-      let _row = idx + 5;
+      let _row = idx + 2;
       let _start = d.startDate.getDay();
 
+      const startDate = new Date(d.startDate);
+      startDate.setHours(0, 0, 0, 0);
+
+      const endDate = new Date(d.endDate);
+      endDate.setHours(0, 0, 0, 0);
+
       //TODO : _end 이부분이 문제인듯
-      let _end =
-        Math.ceil(
-          (d.endDate.valueOf() - d.startDate.valueOf()) / (1000 * 60 * 60 * 24)
-        ) + 2;
+      let distance =
+        (endDate.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000) + 1;
+      let _end = _start + distance;
       // TODO : 여러주에 걸친 일정 렌더링 고민하기
-      if (_end > 9 || _end === 0) {
+      if (_end > 7) {
         _end = 8;
       }
       let _title = d.title;
@@ -53,25 +58,27 @@ export const getScheduleByDate = (
   }
 
   return result;
-  //return sch[key];
+};
 
-  /*
-  for (let i = 0; i < sch.length; i++) {
-    if (
-      tempDate.getFullYear() === sch[i].startDate.getFullYear() &&
-      tempDate.getMonth() === sch[i].startDate.getMonth() &&
-      tempDate.getDate() === sch[i].startDate.getDate()
-    ) {
-      if (result.length < 2) {
-        result.push(sch[i].title);
-      } else if (result.length === 2) {
-        result.push("...");
-      }
+export const getScheduleOfWeek = (
+  d: number,
+  current: Date,
+  schedules: { [Key: string]: TSchedule[] }
+) => {
+  let result: TScheduleView[] = [];
+  for (let i = 0; i < 7; i++) {
+    const tempDate = new Date(current.getFullYear(), current.getDate(), d + i);
+
+    const scheduleByDate = getScheduleByDate(
+      tempDate.getDate(),
+      current,
+      schedules
+    );
+
+    for (let j = 0; j < scheduleByDate.length; j++) {
+      result.push(scheduleByDate[j]);
     }
-  }*/
-  /**
-   * 1. 비교를 검사할때 같은 날짜가 아니라, startDate와 endDate 사이에 존재하는지 여부 확인
-   * 2. start-{n}과 end-{n}도 저장
-   * 3. schedule 구조?
-   */
+  }
+
+  return result;
 };
